@@ -433,6 +433,33 @@ TEST(DummyVector, noncopiableinsert) {
     ASSERT_EQ((v.begin() + 3)->GetX(), size + 3);
 }
 
+/*
+ * Что должен делать оператор пайп?
+ * Он должен поэлементно для каждого элемента из вектора {(в зависимости от их размером)
+ * Идем всегда по right} вычислить сумму умноженную на два
+ * {1, 2, 3, 4} | {1, 2, 3} = {4, 8, 12, 4}
+ * аналогичным образом работает |=
+ * Если тип не арифметический выкинуть исключение std::logic_error
+ */
+class NA {
+public:
+    int a;
+
+    explicit NA(int a) : a(a) {}
+
+    NA() : a(666) {}
+
+    NA operator*(const NA &other) = delete;
+
+    NA operator+(const NA &other) = delete;
+};
+
+TEST(DummyVector, PipeOperator) {
+    bmstu::dummy_vector<NA> v{NA(1), NA(2), NA(3), NA(4), NA(5), NA(6), NA(7), NA(8), NA(9)};
+    bmstu::dummy_vector<NA> v2{NA(1), NA(2), NA(3), NA(4), NA(5), NA(6), NA(7), NA(8), NA(9)};
+    ASSERT_THROW(v | v2, std::logic_error);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 

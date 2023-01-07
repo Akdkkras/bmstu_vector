@@ -159,6 +159,7 @@ namespace bmstu {
                 size_(size), capacity_(size), data_(size) {
             auto first = begin();
             auto last = end();
+            /// скорее всего это похоже на std::copy уже можно ей воспользоваться
             for (; first != last; ++first) {
                 *first = value;
             }
@@ -281,7 +282,7 @@ namespace bmstu {
                 size_t new_capacity = std::max(new_size, capacity_ * 2);
                 reserve(new_capacity);
                 size_ = new_size;
-
+// зачем здесь лишние пробелы (\n)
 
             } else if (new_size < size_) {
                 std::fill(begin() + new_size, end(), Type{});
