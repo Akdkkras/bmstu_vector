@@ -282,8 +282,6 @@ namespace bmstu {
                 size_t new_capacity = std::max(new_size, capacity_ * 2);
                 reserve(new_capacity);
                 size_ = new_size;
-// зачем здесь лишние пробелы (\n)
-
             } else if (new_size < size_) {
                 std::fill(begin() + new_size, end(), Type{});
                 size_ = new_size;
@@ -329,7 +327,7 @@ namespace bmstu {
 
         void push_back(const Type &value) {
             Type tmp = value;
-            push_back(tmp);
+            push_back(std::move(tmp));
         }
 
         void push_back(Type &&value) {
@@ -383,6 +381,43 @@ namespace bmstu {
             os << "]";
             return os;
         }
+
+        /////////////////
+
+        friend dummy_vector operator|(const dummy_vector<Type> &left, const dummy_vector<Type> &right) {
+            if (std::is_arithmetic_v<Type> == false) {
+                throw std::logic_error("qwqwqwqw");
+            }
+            dummy_vector<Type> result;
+            if (right.size() > left.size()) {
+                for (size_t i = 0; i != right.size_; ++i) {
+                    if (i <= left.size()) {
+                        result.push_back((left[i] + right[i]) * 2);
+                    } else {
+                        result.push_back(right[i] * 2);
+                    }
+                }
+            } else {
+                for (size_t i = 0; i != left.size_; ++i) {
+                    if (i < right.size()) {
+                        result.push_back((left[i] + right[i]) * 2);
+                    } else {
+                        result.push_back(left[i]);
+                    }
+                }
+            }
+            return result;
+        }
+
+        dummy_vector<Type> operator|=(const dummy_vector<Type> &other) {
+            dummy_vector<Type> copy(*this);
+            dummy_vector<Type> result;
+            result = copy | other;
+            *this = std::move(result);
+            return *this;
+        }
+
+        ////////////////
 
     private:
         static bool lexicographical_compare_(const dummy_vector<Type> &l, const dummy_vector<Type> &r) {

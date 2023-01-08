@@ -460,6 +460,29 @@ TEST(DummyVector, PipeOperator) {
     ASSERT_THROW(v | v2, std::logic_error);
 }
 
+TEST(DummyVector, PipeOperator2) {
+    bmstu::dummy_vector<int> v{1, 2, 3};
+    bmstu::dummy_vector<int> v2{2, 3, 4, 5, 7, 11};
+    bmstu::dummy_vector<int> v3{0};
+    ASSERT_EQ(v | v2, v3);
+}
+
+TEST(DummyVector, PipeOperator3) {
+    bmstu::dummy_vector<int> v{2, 3, 4, 5};
+    bmstu::dummy_vector<int> v2{1, 2, 3, 1};
+    bmstu::dummy_vector<int> v3{ 6, 10, 14, 5 };
+    ASSERT_EQ(v | v2, v3);
+}
+
+TEST(DummyVector, PipeOperator4) {
+    bmstu::dummy_vector<int> v1{2, 3, 4, 5};
+    bmstu::dummy_vector<int> v2{1, 2, 3, 1};
+    bmstu::dummy_vector<int> v3{2, 3, 4, 5};
+    bmstu::dummy_vector<int> v4{1, 2, 3, 1};
+    v1 |= v2;
+    ASSERT_EQ(v3 | v4, v1);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
