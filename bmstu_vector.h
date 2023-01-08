@@ -382,31 +382,30 @@ namespace bmstu {
             return os;
         }
 
-        /////////////////
-
         friend dummy_vector operator|(const dummy_vector<Type> &left, const dummy_vector<Type> &right) {
-            if (std::is_arithmetic_v<Type> == false) {
-                throw std::logic_error("qwqwqwqw");
-            }
-            dummy_vector<Type> result;
-            if (right.size() > left.size()) {
-                for (size_t i = 0; i != right.size_; ++i) {
-                    if (i <= left.size()) {
-                        result.push_back((left[i] + right[i]) * 2);
-                    } else {
-                        result.push_back(right[i] * 2);
-                    }
-                }
+            if constexpr (!std::is_arithmetic_v<Type>) {
+                throw std::logic_error("логическая ошибка");
             } else {
-                for (size_t i = 0; i != left.size_; ++i) {
-                    if (i < right.size()) {
-                        result.push_back((left[i] + right[i]) * 2);
-                    } else {
-                        result.push_back(left[i]);
+                dummy_vector<Type> result;
+                if (right.size() > left.size()) {
+                    for (size_t i = 0; i != right.size_; ++i) {
+                        if (i <= left.size()) {
+                            result.push_back((left[i] + right[i]) * 2);
+                        } else {
+                            result.push_back(right[i] * 2);
+                        }
+                    }
+                } else {
+                    for (size_t i = 0; i != left.size_; ++i) {
+                        if (i < right.size()) {
+                            result.push_back((left[i] + right[i]) * 2);
+                        } else {
+                            result.push_back(left[i]);
+                        }
                     }
                 }
+                return result;
             }
-            return result;
         }
 
         dummy_vector<Type> operator|=(const dummy_vector<Type> &other) {
@@ -416,8 +415,6 @@ namespace bmstu {
             *this = std::move(result);
             return *this;
         }
-
-        ////////////////
 
     private:
         static bool lexicographical_compare_(const dummy_vector<Type> &l, const dummy_vector<Type> &r) {
