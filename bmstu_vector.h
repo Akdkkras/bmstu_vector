@@ -389,7 +389,7 @@ namespace bmstu {
                 dummy_vector<Type> result;
                 if (right.size() > left.size()) {
                     for (size_t i = 0; i != right.size_; ++i) {
-                        if (i <= left.size()) {
+                        if (i < left.size()) {
                             result.push_back((left[i] + right[i]) * 2);
                         } else {
                             result.push_back(right[i] * 2);

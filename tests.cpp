@@ -482,11 +482,48 @@ TEST(DummyVector, PipeOperator3) {
 
 TEST(DummyVector, PipeOperator4) {
     bmstu::dummy_vector<int> v1{2, 3, 4, 5};
-    bmstu::dummy_vector<int> v2{1, 2, 3, 1};
+    bmstu::dummy_vector<int> v2{1, 2, 3, 1, 7, 11};
     bmstu::dummy_vector<int> v3{2, 3, 4, 5};
-    bmstu::dummy_vector<int> v4{1, 2, 3, 1};
+    bmstu::dummy_vector<int> v4{1, 2, 3, 1, 7, 11};
     v1 |= v2;
     ASSERT_EQ(v3 | v4, v1);
+}
+
+TEST(DummyVector, PipeOperator5) {
+    bmstu::dummy_vector<int> v1{1, 2, 3, 1, 7, 1};
+    bmstu::dummy_vector<int> v2{2, 3, 4, 5};
+    bmstu::dummy_vector<int> v3{1, 2, 3, 1, 7, 1};
+    bmstu::dummy_vector<int> v4{2, 3, 4, 5};
+    v1 |= v2;
+    ASSERT_EQ(v3 | v4, v1);
+}
+
+TEST(DummyVector, PipeOperator6) {
+    bmstu::dummy_vector<int> v1{2, 3, 4, 5};
+    bmstu::dummy_vector<int> v2{1, 2, 3, 1, 7, 3, 7};
+    bmstu::dummy_vector<int> v3{6, 10, 14, 12, 14, 6, 14};
+    ASSERT_EQ(v1 | v2, v3);
+}
+
+TEST(DummyVector, PipeOperator7) {
+    bmstu::dummy_vector<double> v1{1.1, 6.35, 3.4, 7.7, 5};
+    bmstu::dummy_vector<double> v2{2.6, 5.45};
+    bmstu::dummy_vector<double> v3{7.4, 23.6, 3.4, 7.7, 5};
+    ASSERT_EQ(v1 | v2, v3);
+}
+
+TEST(DummyVector, PipeOperator8) {
+    bmstu::dummy_vector<bool> v1{true, false, true};
+    bmstu::dummy_vector<bool> v2{false};
+    bmstu::dummy_vector<bool> v3{true, false, true};
+    ASSERT_EQ(v1 | v2, v3);
+}
+
+TEST(DummyVector, PipeOperator9) {
+    bmstu::dummy_vector<int> v1{};
+    bmstu::dummy_vector<int> v2{};
+    bmstu::dummy_vector<int> v3{};
+    ASSERT_EQ(v1 | v2, v3);
 }
 
 //TEST(Test, Test) {
